@@ -1,0 +1,30 @@
+# Default Docker Compose configuration for Image Metadata Parser
+# This file provides a simple way to run the application in development mode
+
+version: '3.8'
+
+services:
+  metadata-parser:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: metadata-parser
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - metadata-parser-network
+    restart: unless-stopped
+
+networks:
+  metadata-parser-network:
+    driver: bridge
+
+# Usage:
+# Development: docker-compose up
+# Production: docker-compose -f docker-compose.prod.yml up
+# With Traefik: docker-compose -f docker-compose.prod.yml --profile traefik up

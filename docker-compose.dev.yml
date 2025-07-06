@@ -1,0 +1,32 @@
+# Docker Compose configuration for Image Metadata Parser development environment
+version: '3.8'
+
+services:
+  metadata-parser-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: metadata-parser-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source code for hot reloading
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_DEV_SERVER_HOST=0.0.0.0
+    networks:
+      - metadata-parser-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  metadata-parser-network:
+    driver: bridge
+    name: metadata-parser-dev-network

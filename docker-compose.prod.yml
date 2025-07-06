@@ -1,0 +1,55 @@
+# Docker Compose configuration for Image Metadata Parser production deployment
+version: '3.8'
+
+services:
+  metadata-parser-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: metadata-parser-prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - metadata-parser-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.metadata-parser.rule=Host(`metadata-parser.local`)"
+      - "traefik.http.services.metadata-parser.loadbalancer.server.port=80"
+
+  # Optional: Add a reverse proxy for production
+  traefik:
+    image: traefik:v2.10
+    container_name: metadata-parser-traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "8080:8080"  # Traefik dashboard
+      - "8000:80"    # Application port
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - metadata-parser-network
+    restart: unless-stopped
+    profiles:
+      - traefik
+
+networks:
+  metadata-parser-network:
+    driver: bridge
+    name: metadata-parser-prod-network
+
+volumes:
+  nginx-cache:
+    driver: local

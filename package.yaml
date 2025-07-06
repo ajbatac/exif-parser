@@ -1,0 +1,118 @@
+# Package configuration in YAML format
+# This file provides an alternative view of package.json in YAML format
+
+name: image-metadata-parser
+version: 1.0.0
+description: Modern web-based metadata extraction tool with advanced coordinate processing
+private: true
+type: module
+
+# Application metadata
+metadata:
+  title: Image Metadata Parser
+  author: Development Team
+  license: MIT
+  repository:
+    type: git
+    url: https://github.com/yourusername/image-metadata-parser.git
+  keywords:
+    - metadata
+    - metadata
+    - coordinates
+    - image-processing
+    - react
+    - typescript
+    - tailwind
+
+# Runtime dependencies
+dependencies:
+  # Core React ecosystem
+  react: ^18.3.1
+  react-dom: ^18.3.1
+  
+  # Metadata processing
+  exifreader: ^4.31.1
+  
+  # UI components and icons
+  lucide-react: ^0.344.0
+
+# Development dependencies
+devDependencies:
+  # Build tools
+  vite: ^5.4.2
+  "@vitejs/plugin-react": ^4.3.1
+  
+  # TypeScript support
+  typescript: ^5.5.3
+  "@types/react": ^18.3.5
+  "@types/react-dom": ^18.3.0
+  
+  # CSS processing
+  tailwindcss: ^3.4.1
+  autoprefixer: ^10.4.18
+  postcss: ^8.4.35
+  
+  # Code quality
+  eslint: ^9.9.1
+  "@eslint/js": ^9.9.1
+  typescript-eslint: ^8.3.0
+  eslint-plugin-react-hooks: ^5.1.0-rc.0
+  eslint-plugin-react-refresh: ^0.4.11
+  globals: ^15.9.0
+
+# NPM scripts
+scripts:
+  # Development
+  dev: vite
+  
+  # Production build
+  build: vite build
+  
+  # Preview production build
+  preview: vite preview
+  
+  # Code quality
+  lint: eslint .
+  lint:fix: eslint . --fix
+  
+  # Type checking
+  type-check: tsc --noEmit
+  
+  # Docker commands
+  docker:dev: docker-compose -f docker-compose.dev.yml up --build
+  docker:prod: docker-compose -f docker-compose.prod.yml up --build
+  docker:down: docker-compose down
+  
+  # Cleanup
+  clean: rm -rf dist node_modules
+  fresh-install: npm run clean && npm install
+
+# Engine requirements
+engines:
+  node: ">=18.0.0"
+  npm: ">=8.0.0"
+
+# Browser support targets
+browserslist:
+  production:
+    - ">0.2%"
+    - "not dead"
+    - "not op_mini all"
+  development:
+    - "last 1 chrome version"
+    - "last 1 firefox version"
+    - "last 1 safari version"
+
+# Build configuration
+build:
+  target: es2020
+  outDir: dist
+  sourcemap: true
+  minify: true
+  
+# Development server configuration
+dev-server:
+  port: 5173
+  host: localhost
+  open: true
+  cors: true
